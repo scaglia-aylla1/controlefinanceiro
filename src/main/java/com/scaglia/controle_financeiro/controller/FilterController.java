@@ -5,6 +5,7 @@ import com.scaglia.controle_financeiro.dto.FilterDTO;
 import com.scaglia.controle_financeiro.dto.IncomeDTO;
 import com.scaglia.controle_financeiro.service.ExpenseService;
 import com.scaglia.controle_financeiro.service.IncomeService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class FilterController {
     private final IncomeService incomeService;
 
     @PostMapping
+    @Operation(summary = "Filtra as transações por: tipo, campo, ordem e palavra chave")
     public ResponseEntity<?> filterTransactions(@RequestBody FilterDTO filter){
         //Preparando a validação de dados
         LocalDate startDate = filter.getStartDate() != null ? filter.getStartDate() : LocalDate.MIN;

@@ -4,6 +4,7 @@ import com.scaglia.controle_financeiro.dto.ExpenseDTO;
 import com.scaglia.controle_financeiro.repository.CategoryRepository;
 import com.scaglia.controle_financeiro.repository.ProfileRepository;
 import com.scaglia.controle_financeiro.service.ExpenseService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +22,21 @@ public class ExpenseController {
     private final ProfileRepository profileRepository;
 
     @PostMapping
+    @Operation(summary = "Cria uma despesa")
     public ResponseEntity<ExpenseDTO> addExpense(@RequestBody ExpenseDTO dto){
         ExpenseDTO saved = expenseService.addExpense(dto);
         return  ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping
+    @Operation(summary = "Busca todas as despesas")
     public ResponseEntity<List<ExpenseDTO>> getExpenses(){
         List<ExpenseDTO> expenses = expenseService.getCurrentMonthExpensesForCurrentUser();
         return ResponseEntity.ok(expenses);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta uma despesa")
     public ResponseEntity<Void> deleteExpense(@PathVariable Long id){
         expenseService.deleteExpense(id);
         return ResponseEntity.noContent().build();

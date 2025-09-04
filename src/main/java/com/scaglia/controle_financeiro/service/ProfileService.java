@@ -6,6 +6,7 @@ import com.scaglia.controle_financeiro.entity.ProfileEntity;
 import com.scaglia.controle_financeiro.repository.ProfileRepository;
 import com.scaglia.controle_financeiro.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,13 +30,16 @@ public class ProfileService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
+    @Value("${app.activation.url}")
+    private String activationUrl;
+
     public ProfileDto registerProfile(ProfileDto profileDto){
         ProfileEntity newProfile = toEntity(profileDto);
         newProfile.setActivationToken(UUID.randomUUID().toString());
         newProfile = profileRepository.save(newProfile);
 
         //enviar e-mail de ativação
-        String activationLink = "http://localhost:8080/api/v1.0/activate?token=" + newProfile.getActivationToken();
+        String activationLink = activationUrl+"/api/v1.0/activate?token=" + newProfile.getActivationToken();
         String subject = "Ative sua conta de Controle Financeiro App";
         String body = "Clique no link a seguir para ativar sua conta: " + activationLink;
         emailService.sendEmail(newProfile.getEmail(), subject, body);
