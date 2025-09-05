@@ -39,7 +39,7 @@ public class ProfileService {
         newProfile = profileRepository.save(newProfile);
 
         //enviar e-mail de ativação
-        String activationLink = activationUrl+"/api/v1.0/activate?token=" + newProfile.getActivationToken();
+        String activationLink = activationUrl+"activate?token=" + newProfile.getActivationToken();
         String subject = "Ative sua conta de Controle Financeiro App";
         String body = "Clique no link a seguir para ativar sua conta: " + activationLink;
         emailService.sendEmail(newProfile.getEmail(), subject, body);
